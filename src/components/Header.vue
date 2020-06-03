@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-03 14:55:51
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-03 15:11:50
+ * @LastEditTime: 2020-06-03 16:12:45
 -->
 <template>
   <div class="header">
@@ -13,7 +13,7 @@
 
       <span @click="dialogVisible = true">关于</span>
     </div>
-    <el-dialog title='关于本项目' :visible.sync='dialogVisible' width="35%">
+    <el-dialog title='关于本项目说明' :visible.sync='dialogVisible' width="35%">
       <div class="inside-dialog">
         <p>
           作者：
@@ -95,6 +95,24 @@ export default {
       cursor: pointer;
       font-size: 15px;
       font-weight: bold;
+    }
+  }
+}
+
+</style>
+
+<style lang='scss'>
+.header {
+  .el-dialog__body {
+    padding-top: 10px;
+    padding-bottom: 0;
+    .inside-dialog {
+      p {
+        margin: auto;
+      }
+      .el-icon-star-off::before {
+        color: #ef0f0f;
+      }
     }
   }
 }

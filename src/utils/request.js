@@ -1,3 +1,9 @@
+/*
+ * @Author: QIYE
+ * @Date: 2020-06-02 14:35:12
+ * @LastEditors: qiye
+ * @LastEditTime: 2020-06-03 16:18:09
+ */
 
 
 import axios from "axios";
@@ -29,8 +35,9 @@ let loading
 const startLoading = ()=>{
   loading = Loading.service({
     lock: true,
-    text: '加载中……',
-    background: 'rgba(0, 0, 0, 0.7)'
+    text: '拼命加载中……',
+    spinner:'el-icon-loading',
+    background: 'rgba(0, 0, 0, 0.8)'
   })
 }
 

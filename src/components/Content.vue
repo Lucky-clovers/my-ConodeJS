@@ -5,15 +5,18 @@
       <router-link :to='{path: "/user/"+item.author.loginname}'>
         <img :src='item.author.avatar_url' alt="用户头像" />
       </router-link>
+
       <span class="count">
         <em>{{item.reply_count}}</em>/<em>{{item.visit_count}}</em>
       </span>
-      <el-tag :type='$tab[item.tab] && $tab[item.tab].type'>
-        {{$tab[item.tab] && $tab[item.tab].name}}
+
+      <el-tag :type='item.good == true ?  $tab.good.type : ( $tab[item.tab] && $tab[item.tab].type)' v-text="item.good == true ? $tab.good.name:($tab[item.tab] && $tab[item.tab].name)">
       </el-tag>
+
       <router-link class="title" :to='{path: "/topic/"+ item.id}'>
         {{item.title}}
       </router-link>
+
       <span class="time">
         {{$moment(item.last_reply_at, 'YYYY-MM-DD')
         .startOf('day')

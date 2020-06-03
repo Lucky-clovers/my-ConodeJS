@@ -11,10 +11,10 @@
       <el-tab-pane label="分享" name="share">
         <Content :list="list" />
       </el-tab-pane>
-      <el-tab-pane label="招聘" name="job">
+       <el-tab-pane label="问答" name="ask">
         <Content :list="list" />
       </el-tab-pane>
-      <el-tab-pane label="问答" name="ask">
+      <el-tab-pane label="招聘" name="job">
         <Content :list="list" />
       </el-tab-pane>
       <el-tab-pane label="客户端测试" name="dev">
@@ -62,6 +62,8 @@ export default {
         tab: this.tab
       }).then(res => {
         this.list = res.data
+        console.log( res.data)
+
         this.limit = this.limit + 10
 
         const store = this.store
@@ -78,9 +80,12 @@ export default {
     scrollMethod() {
       const sumH =
         document.body.scrollHeight || document.documentElement.scrollHeight
+
       const viewH = document.documentElement.clientHeight
+
       const scrollH =
         document.body.scrollTop || document.documentElement.scrollTop
+
       if (viewH + scrollH >= sumH) {
         this.getTopics()
       }
@@ -92,6 +97,8 @@ export default {
      */
     tabChanged() {
       const store = this.store
+
+        console.log(store)
 
       // 如果未存储当前Tab的数据，重新获取
       if (!store[this.tab]) {
