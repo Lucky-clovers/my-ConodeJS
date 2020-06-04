@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-03 17:29:01
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-03 18:23:21
+ * @LastEditTime: 2020-06-04 10:04:07
  */
 /**
  * 一个发布-订阅模式的实现
@@ -48,18 +48,23 @@ const eventProxy = {
     }
 
     key = arguments[0]
+     //改变数组的slice方法的作用域，在特定作用域中去调用slice方法，call（）方法的第二个参数表示传递给slice的参数即截取数组的起始位置。
     args = [].concat(Array.prototype.slice.call(arguments, 1))
 
     if (this.onObj[key] !== undefined && this.onObj[key].length > 0) {
       for (let i in this.onObj[key]) {
+        //this.onObj[key][i] null 要被替换的数据  args 要替换成的数据
         this.onObj[key][i].apply(null, args)
       }
     }
+
     if (this.oneObj[key] !== undefined && this.oneObj[key].length > 0) {
       for (let i in this.oneObj[key]) {
         this.oneObj[key][i].apply(null, args)
+        //this.oneObj[key][i] 最终等于undefined
         this.oneObj[key][i] = undefined
       }
+      //this.oneObj[key] 等于空数组
       this.oneObj[key] = []
     }
   }

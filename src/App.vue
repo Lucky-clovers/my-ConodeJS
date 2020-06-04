@@ -2,12 +2,12 @@
  * @Author: QIYE
  * @Date: 2020-06-02 12:05:49
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-03 14:58:32
+ * @LastEditTime: 2020-06-04 15:21:02
 -->
 <template>
   <div id="app">
     <Header/>
-    <div class="class='main-section'">
+    <div class="main-section">
       <router-view/>
     </div>
   </div>
@@ -38,7 +38,6 @@ export default {
   padding: 0;
 }
 </style>
-
 <style lang="scss" scoped>
 .main-section {
   margin: auto;
@@ -46,3 +45,4 @@ export default {
   width: 1200px;
 }
 </style>
+

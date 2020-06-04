@@ -1,3 +1,9 @@
+/*
+ * @Author: QIYE
+ * @Date: 2020-06-02 17:17:37
+ * @LastEditors: qiye
+ * @LastEditTime: 2020-06-04 14:52:11
+ */
 
 import request from '@/utils/request'
 
@@ -12,17 +18,17 @@ export const getTopics = data => {
 
 
 // 获取帖子详情数据
-export const getTopicById = data => {
+export const getTopicById = id => {
   return request({
-    url:`/topics/${id}`,
-    method:'get',
+    url: `/topic/${id}`,
+    method: 'get'
   })
 }
 
 // 获取用户详情数据
-export const getUserByName = data =>{
+export const getUserByName = loginname =>{
   return request({
-    url: `/suer/${loginname}`,
+    url: `/user/${loginname}`,
     method: 'get',
   })
 }

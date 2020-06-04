@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-03 17:25:21
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-03 17:25:21
+ * @LastEditTime: 2020-06-04 11:00:11
 -->
 <template>
   <div class="panel">
@@ -10,6 +10,19 @@
       <img :src="user.avatar_url" alt="用户头像" />
       <span>{{user.loginname}}</span>
     </router-link>
+    <div>积分：{{user.score}}</div>
+    <div>
+      Github：
+      <a :href='"https://github.com/" + user.githubUsername' target="_blank" rel="nofollow noopener noreferrer">
+        {{user.githubUsername}}
+      </a>
+    </div>
+    <div>
+      注册时间：
+      {{$moment(user.create_at, 'YYYY-MM-DD')
+      .startOf('day')
+      .fromNow()}}
+    </div>
   </div>
 </template>
 <script>
@@ -37,10 +50,52 @@ export default {
      */
     fetchData(loginname) {
       getUserByName(loginname).then(res => {
+        console.log(res.data)
         this.user = res.data
         eventProxy.trigger('user', res.data)
       })
     }
   },
+   /**
+   * 一般此钩子下面调用接口获取数据
+   */
+  created() {
+    if (!this.loginname) {
+      return;
+    }
+    this.fetchData(this.loginname);
+  },
+
+  watch: {
+    loginname(loginname) {
+      if (!loginname) {
+        return;
+      }
+      this.fetchData(loginname);
+    }
+  }
 }
 </script>
+<style lang="scss" scoped>
+.panel {
+  display: flex;
+  flex-direction: column;
+  color: black;
+  padding: 20px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  > a {
+    display: flex;
+    align-items: center;
+    img {
+      width: 48px;
+      height: 48px;
+      border-radius: 5px;
+      margin-right: 20px;
+    }
+  }
+  .user {
+    margin-bottom: 10px;
+  }
+}
+</style>
+

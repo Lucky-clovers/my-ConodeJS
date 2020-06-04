@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-03 14:55:51
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-03 16:12:45
+ * @LastEditTime: 2020-06-04 16:51:52
 -->
 <template>
   <div class="header">
@@ -111,7 +111,7 @@ export default {
         margin: auto;
       }
       .el-icon-star-off::before {
-        color: #ef0f0f;
+        color: #409EFF;
       }
     }
   }

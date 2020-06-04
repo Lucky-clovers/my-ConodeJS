@@ -1,16 +1,19 @@
 
 <template>
   <div>
-     <div class='topic' v-for='item in list' :key='item.id'>
-      <router-link :to='{path: "/user/"+item.author.loginname}'>
+     <div class='topic' v-for='item in list' :key='item.id' v-show='item.tab'>
+      <router-link  class="Avatar" :to='{path: "/user/"+item.author.loginname}'>
         <img :src='item.author.avatar_url' alt="用户头像" />
       </router-link>
 
       <span class="count">
-        <em>{{item.reply_count}}</em>/<em>{{item.visit_count}}</em>
+        <em title="回复">{{item.reply_count}}</em>/<em title="点击数">{{item.visit_count}}</em>
       </span>
 
-      <el-tag :type='item.good == true ?  $tab.good.type : ( $tab[item.tab] && $tab[item.tab].type)' v-text="item.good == true ? $tab.good.name:($tab[item.tab] && $tab[item.tab].name)">
+      <el-tag v-show="!item.top" :type='item.good == true ?  $tab.good.type : ( $tab[item.tab] && $tab[item.tab].type)' v-text="item.good == true ? $tab.good.name :($tab[item.tab] && $tab[item.tab].name)" >
+      </el-tag>
+
+      <el-tag v-show="item.top" type="brand" v-text="'置顶'" >
       </el-tag>
 
       <router-link class="title" :to='{path: "/topic/"+ item.id}'>
@@ -52,14 +55,20 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  img {
-    width: 50px;
-    border-radius: 50%;
-    height: 50px;
+  .Avatar{
+    width: 55px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    img {
+      width: 50px;
+      border-radius: 50%;
+      height: 50px;
+    }
   }
   span.count {
-    width: 50px;
+    width: 75px;
     text-align: center;
+
     em:first-child {
       font-size: 1.2em;
       color: purple;

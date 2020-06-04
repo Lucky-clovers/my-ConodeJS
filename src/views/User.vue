@@ -1,12 +1,12 @@
 <!--
  * @Date: 2020-06-02 19:41:32
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-03 09:59:46
+ * @LastEditTime: 2020-06-04 15:08:15
 -->
 <template>
   <div class="user">
-    <ProfilePanel :loginname='loginname' />
-    <OtherTopic :simple='false' />
+    <ProfilePanel :loginname="loginname" />
+    <OtherTopic :simple="false" />
     <RecentReply :simple='false' />
   </div>
 </template>
@@ -14,27 +14,27 @@
 /**
  * 用户个人中心页
  */
-// import OtherTopic from "@/components/OtherTopic";
-// import ProfilePanel from "@/components/ProfilePanel";
-// import RecentReply from "@/components/RecentReply";
+import OtherTopic from '@/components/User/OtherTopic';//头像信息
+import ProfilePanel from '@/components/User/ProfilePanel';//最近创建的话题
+import RecentReply from "@/components/User/RecentReply";//最近参与的话题
 export default {
-    /**
+  /**
    * 给此组件起的名字，会显示在Vue的DevTool里面
    */
-  name: "User",
+  name: 'User',
   /**
    * 当前组件的‘数据中心'
    */
   data() {
     return {
-      loginname: ""
-    };
+      loginname: ''
+    }
   },
   /**
    * 一般此钩子下面调用接口获取数据
    */
   created() {
-    this.loginname = this.$route.params.id;
+    this.loginname = this.$route.params.id
   },
   /**
    * 在当前路由改变，但是该组件被复用时调用
@@ -43,16 +43,16 @@ export default {
    * 可以访问组件实例 `this`
    */
   beforeRouteUpdate(to, from, next) {
-    this.loginname = to.params.id;
-    next();
+    this.loginname = to.params.id
+    next()
   },
   /**
    * 注册引用进来的其他组件
    */
   components: {
-    // RecentReply,
-    // OtherTopic,
-    // ProfilePanel
+    RecentReply,
+    OtherTopic,
+    ProfilePanel
   }
 }
 </script>

@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-02 12:05:49
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-03 17:20:01
+ * @LastEditTime: 2020-06-04 14:48:35
  */
 import Vue from "vue";
 import Router from "vue-router";
@@ -15,8 +15,18 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: ()=>import('@/views/home'),
+      component: ()=>import('@/views/Home'),
 
+    },
+    {
+      path: '/user/:id',
+      name: 'user',
+      component:  ()=>import('@/views/User'),
+    },
+    {
+      path: '/topic/:id',
+      name: 'topic',
+      component:  ()=>import('@/views/Topic'),
     },
     {
       path:'*',
