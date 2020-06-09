@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-03 17:25:21
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-04 11:00:11
+ * @LastEditTime: 2020-06-08 15:38:10
 -->
 <template>
   <div class="panel">
@@ -11,6 +11,11 @@
       <span>{{user.loginname}}</span>
     </router-link>
     <div>积分：{{user.score}}</div>
+
+    <router-link class="collections" :to="{path: '/collections/' + user.loginname}">
+        <div>{{collections}}个话题收藏</div>
+    </router-link>
+
     <div>
       Github：
       <a :href='"https://github.com/" + user.githubUsername' target="_blank" rel="nofollow noopener noreferrer">
@@ -29,7 +34,7 @@
 /**
  * 话题页面右侧上面的个人信息展示页面
  */
-import { getUserByName } from '@/utils/api'
+import { getUserByName,getCollections } from '@/utils/api'
 import eventProxy from "@/utils/eventProxy";
 
 export default {
@@ -41,7 +46,8 @@ export default {
   props: ['loginname'],
   data() {
     return {
-      user: {}
+      user: {},
+      collections:[]
     }
   },
   methods: {
@@ -53,6 +59,9 @@ export default {
         console.log(res.data)
         this.user = res.data
         eventProxy.trigger('user', res.data)
+      });
+      getCollections(loginname).then(res => {
+        this.collections = res.data.length
       })
     }
   },
@@ -95,6 +104,9 @@ export default {
   }
   .user {
     margin-bottom: 10px;
+  }
+  .collections{
+    color: #409EFF;
   }
 }
 </style>

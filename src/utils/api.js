@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-02 17:17:37
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-04 14:52:11
+ * @LastEditTime: 2020-06-08 17:44:20
  */
 
 import request from '@/utils/request'
@@ -30,5 +30,21 @@ export const getUserByName = loginname =>{
   return request({
     url: `/user/${loginname}`,
     method: 'get',
+  })
+}
+
+export const getCollections = loginname =>{
+  return request({
+    url: `/topic_collect/${loginname}`,
+    method: 'get',
+  })
+}
+
+// /accesstoken 验证 accessToken 的正确性
+export const getAccesstoken = data =>{
+  return request({
+    url: `/accesstoken`,
+    method:'post',
+    data
   })
 }

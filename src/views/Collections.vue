@@ -1,16 +1,16 @@
 <!--
  * @Author: QIYE
- * @Date: 2020-06-04 13:56:26
+ * @Date: 2020-06-05 10:21:28
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-05 10:40:35
+ * @LastEditTime: 2020-06-05 10:43:24
 -->
 <template>
   <div class="panel">
-    <header>最近参与的话题</header>
+    <header>{{loginname}} 收藏的话题</header>
     <Divider class="divider" />
-    <template v-for="item in user.recent_replies">
+    <template v-for="item in collections">
       <div :key="item.id">
-        <router-link v-if="simple" :to="{path: '/topic/' + item.id}">{{item.title}}</router-link>
+        <router-link v-if="length" :to="{path: '/topic/' + item.id}">{{item.title}}</router-link>
         <div v-else>
           <div class="main">
             <div>
@@ -32,21 +32,23 @@
   </div>
 </template>
 <script>
-import eventProxy from '@/utils/eventProxy'
 import Divider from '@/components/Divider'
+import { getCollections } from '@/utils/api'
 
 export default {
   name: 'RecentReply',
-  props: {
-    simple: {
-      default: true,
-      type: Boolean
-    }
-  },
-
   data() {
     return {
-      user: {}
+      collections:[]
+    }
+  },
+  methods: {
+    fetchData(loginname) {
+      getCollections(loginname).then(res => {
+
+        this.collections = res.data
+        console.log('收藏',res.data)
+      })
     }
   },
   /**
@@ -54,21 +56,27 @@ export default {
    * P.S. 一般在此钩子下面调用接口或者类似操作
    */
   created() {
-    // 增加属性，表示当前实例未被卸载
-    this.isUnmounted = false
-    eventProxy.on('user', data => {
-      // 如果当前实例被卸载了，就没有必要更新其state了（会引起内存泄漏）
-      if (!this.isUnmounted) {
-        this.user = data
-      }
-    })
+    this.loginname = this.$route.params.id
+    if (!this.loginname) {
+      return;
+    }
+    this.fetchData(this.loginname);
   },
+
   /**
    * 组件被销毁的钩子
    * 给this增加属性，表示当前实例已被卸载
    */
   destroyed() {
-    this.isUnmounted = true
+
+  },
+  watch: {
+    loginname(loginname) {
+      if (!loginname) {
+        return;
+      }
+      this.fetchData(loginname);
+    }
   },
   components: {
     Divider

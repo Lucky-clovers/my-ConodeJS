@@ -1,3 +1,9 @@
+/*
+ * @Author: QIYE
+ * @Date: 2020-06-02 12:05:49
+ * @LastEditors: qiye
+ * @LastEditTime: 2020-06-05 14:49:17
+ */
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 /**
@@ -6,6 +12,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store'
 
 import '@/assets/vue.css'
 import moment from 'moment'
@@ -35,6 +42,8 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router,
-  components: { App },
-  template: '<App/>'
-}).$mount('#app')
+  store,
+  render: h => h(App)
+  /* components: { App },
+  template: '<App/>'   .$mount('#app')*/
+})

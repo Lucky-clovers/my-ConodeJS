@@ -2,36 +2,61 @@
  * @Author: QIYE
  * @Date: 2020-06-03 14:55:51
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-04 16:51:52
+ * @LastEditTime: 2020-06-09 11:40:37
 -->
 <template>
   <div class="header">
     <div class="info">
       <a href="/">
-        <img :src='require("@/assets/image/cnodejs.svg")' alt="网站logo" />
+        <img :src="require('@/assets/image/cnodejs.svg')" alt="网站logo" />
       </a>
 
-      <span @click="dialogVisible = true">关于</span>
+      <ul class="nav pull-right">
+        <li>
+          <a href="/">首页</a>
+        </li>
+        <li>
+          <a href="javascript:;">注册</a>
+        </li>
+        <li>
+          <a @click="signin = true" href="javascript:;">登录</a>
+        </li>
+        <li @click="dialogVisible = true">
+          <a href="javascript:;">关于</a>
+        </li>
+      </ul>
+      <!-- <span @click="dialogVisible = true">关于</span> -->
     </div>
-    <el-dialog title='关于本项目说明' :visible.sync='dialogVisible' width="35%">
+
+    <!-- 登录 -->
+    <el-dialog title="登录" :visible.sync="signin" width="35%">
+      <div class="inside-dialog signin">
+        <el-input name='accesstoken' v-model="accesstoken" placeholder="请输入Access Token" clearable></el-input>
+          <el-button type="primary" size="medium" @click="getAccesstoken(accesstoken)">登录</el-button>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="signin = false">确 定</el-button>
+      </span>
+    </el-dialog>
+
+    <el-dialog title="关于本项目说明" :visible.sync="dialogVisible" width="35%">
       <div class="inside-dialog">
         <p>
           作者：
-          <a href="http://x361.xyz" target="_blank" rel="nofollow noopener noreferrer">
-            祁野
-          </a>
+          <a href="http://x361.xyz" target="_blank" rel="nofollow noopener noreferrer">祁野</a>
         </p>
         <p>
           源码：
-          <el-icon type="star" class='el-icon-star-off' />
-          <a href="https://github.com/shuiRong/VueCnodeJS" target="_blank" rel="nofollow noopener noreferrer">
-            my-ConodeJS
-          </a>
-          <el-icon type="star" class='el-icon-star-off' />
-          &nbsp;欢迎Star~&nbsp;
-          <el-icon type="star" class='el-icon-star-off' />
+          <el-icon type="star" class="el-icon-star-off" />
+          <a
+            href="https://github.com/shuiRong/VueCnodeJS"
+            target="_blank"
+            rel="nofollow noopener noreferrer"
+          >my-ConodeJS</a>
+          <el-icon type="star" class="el-icon-star-off" />&nbsp;欢迎Star~&nbsp;
+          <el-icon type="star" class="el-icon-star-off" />
         </p>
-         <div>
+        <div>
           <p>技术栈：</p>
           <ul>
             <li>Vue</li>
@@ -42,12 +67,15 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary"  @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 <script>
+/* import { getAccesstoken } from '@/utils/api' */
+
+
 /**
  * 网站顶部组件
  */
@@ -61,9 +89,23 @@ export default {
    */
   data() {
     return {
-      dialogVisible: false
+      dialogVisible: false,
+      signin: false,
+      accesstoken: ''
     }
-  }
+  },
+  methods: {
+    getAccesstoken(accesstoken){
+      let data = {accesstoken:accesstoken}
+      /* getAccesstoken(data).then(res => {
+         console.log(res)
+         console.log(this.$store)
+        }) */
+        console.log(this.$store.dispatch('getAccesstoken',accesstoken).then(()=>{
+          console.log(this.$store.getters)
+        }))
+    }
+  },
 }
 </script>
 
@@ -87,7 +129,7 @@ export default {
         width: 100%;
       }
     }
-    span {
+    /* span {
       float: right;
       height: 50px;
       line-height: 50px;
@@ -95,10 +137,35 @@ export default {
       cursor: pointer;
       font-size: 15px;
       font-weight: bold;
+    } */
+  }
+  .nav {
+    position: relative;
+    left: 0;
+    display: block;
+    float: right;
+    margin: 0 10px 0 0;
+    li {
+      list-style: none;
+      float: left;
+      text-align: center;
+      a {
+        text-shadow: none;
+        color: #ccc;
+        height: 30px;
+        line-height: 30px;
+        padding: 10px 15px;
+        width: auto;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 15px;
+      }
     }
   }
+  .signin{
+    text-align: center;
+  }
 }
-
 </style>
 
 <style lang='scss'>
@@ -111,9 +178,18 @@ export default {
         margin: auto;
       }
       .el-icon-star-off::before {
-        color: #409EFF;
+        color: #409eff;
       }
     }
+    .el-input {
+      width: 60%;
+      margin: 0 auto;
+    }
+    .el-button--medium {
+      width: 60%;
+      margin-top: 30px;
+    }
+
   }
 }
 </style>
