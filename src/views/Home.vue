@@ -1,7 +1,7 @@
 <template>
   <div class="home">
 
-    <el-tabs v-model="tab" @tab-click="tabChanged">
+    <el-tabs v-model="tab" class="left" @tab-click="tabChanged">
       <el-tab-pane label="全部" name="all">
         <Content :list="list" />
       </el-tab-pane>
@@ -21,6 +21,7 @@
         <Content :list="list" />
       </el-tab-pane>
     </el-tabs>
+    <Person class="right"/>
   </div>
 </template>
 
@@ -29,6 +30,7 @@
  * 主页
  */
 import Content from '@/components/Content.vue'
+import Person from '@/components/Person/Person.vue';
 import { getTopics } from '@/utils/api'
 
 export default {
@@ -129,17 +131,38 @@ export default {
    * 注册引用进来的其他组件
    */
   components: {
-    Content
+    Content,
+    Person
   }
 }
 </script>
 
 <style lang="scss" scoped>
+$grey-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+
 .home {
-  margin: auto;
-  width: 75%;
-  padding: 20px 30px;
-  box-sizing: border-box;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+
+  .left {
+    width: 72%;
+    float: left;
+    box-shadow: $grey-shadow;
+    padding: 20px;
+    .info {
+      display: flex;
+      align-items: center;
+      color: #838383;
+      font-size: 12px;
+    }
+  }
+  .right {
+    float: right;
+    width: 25%;
+    height: 100%;
+    margin-left: 2%;
+    padding: 20px 20px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  }
 }
 </style>

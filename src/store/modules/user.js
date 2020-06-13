@@ -2,22 +2,25 @@
  * @Author: QIYE
  * @Date: 2020-06-08 17:28:28
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-09 11:40:50
+ * @LastEditTime: 2020-06-12 17:27:39
  */
 import Cookies from 'js-cookie'
 
-import {getAccesstoken} from '@/utils/api'
+import {getAccesstoken,logout} from '@/utils/api'
 import {startLoading,error} from '@/utils/request'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const state = {
-  token: '',
-
+  token: JSON.parse(getToken()) ,
+  signin:false
 }
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
+  SET_SIGNIN: (state, signin) => {
+    state.signin = signin
+  }
  /*  SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
   },
@@ -53,13 +56,42 @@ const actions = {
     })
   }, */
 
+  //登录
   getAccesstoken({ commit },accesstoken){
     let data = {accesstoken:accesstoken}
-    getAccesstoken(data).then(res => {
-       console.log(res)
-       setToken(res.loginname)
-       commit('SET_TOKEN', res.loginname)
+    return new Promise((resolve, reject) => {
+      getAccesstoken(data).then(res => {
+        console.log(res)
+
+        setToken(JSON.stringify(res))
+
+        commit('SET_TOKEN', res)
+        resolve()
+       }).catch(err => {
+        reject(err)
       })
+    })
+  },
+
+  //是否弹出登录
+   /* setSignin({ commit },signin){
+    console.log('执行',signin)
+      commit('SET_SIGNIN', signin)
+  }, */
+
+  //退出登录
+  logout({commit} ){
+    return new Promise((resolve,reject) => {
+      logout().then(res=>{
+
+        removeToken()
+        commit('SET_TOKEN', '')
+        resolve()
+
+      }).catch(err => {
+        reject(err)
+      })
+    })
   }
 }
 

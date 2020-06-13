@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-03 17:25:21
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-08 15:38:10
+ * @LastEditTime: 2020-06-10 15:55:00
 -->
 <template>
   <div class="panel">
@@ -13,7 +13,7 @@
     <div>积分：{{user.score}}</div>
 
     <router-link class="collections" :to="{path: '/collections/' + user.loginname}">
-        <div>{{collections}}个话题收藏</div>
+        <div>{{collections || 0}}个话题收藏</div>
     </router-link>
 
     <div>
@@ -60,6 +60,7 @@ export default {
         this.user = res.data
         eventProxy.trigger('user', res.data)
       });
+
       getCollections(loginname).then(res => {
         this.collections = res.data.length
       })

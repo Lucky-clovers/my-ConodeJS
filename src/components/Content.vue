@@ -1,34 +1,41 @@
+<!--
+ * @Author: QIYE
+ * @Date: 2020-06-02 17:33:57
+ * @LastEditors: qiye
+ * @LastEditTime: 2020-06-10 11:21:00
+-->
 
 <template>
-  <div>
+  <div >
      <div class='topic' v-for='item in list' :key='item.id' v-show='item.tab'>
-      <router-link  class="Avatar" :to='{path: "/user/"+item.author.loginname}'>
-        <img :src='item.author.avatar_url' alt="用户头像" />
-      </router-link>
 
-      <span class="count">
-        <em title="回复">{{item.reply_count}}</em>/<em title="点击数">{{item.visit_count}}</em>
-      </span>
+        <router-link  class="Avatar" :to='{path: "/user/"+item.author.loginname}'>
+          <img :src='item.author.avatar_url' alt="用户头像" />
+        </router-link>
+        <span class="count">
+          <em title="回复">{{item.reply_count}}</em>/<em title="点击数">{{item.visit_count}}</em>
+        </span>
 
-      <el-tag v-show="!item.top" :type='item.good == true ?  $tab.good.type : ( $tab[item.tab] && $tab[item.tab].type)' v-text="item.good == true ? $tab.good.name :($tab[item.tab] && $tab[item.tab].name)" >
-      </el-tag>
+        <el-tag v-show="!item.top" :type='item.good == true ?  $tab.good.type : ( $tab[item.tab] && $tab[item.tab].type)' v-text="item.good == true ? $tab.good.name :($tab[item.tab] && $tab[item.tab].name)" >
+        </el-tag>
 
-      <el-tag v-show="item.top" type="brand" v-text="'置顶'" >
-      </el-tag>
+        <el-tag v-show="item.top" type="brand" v-text="'置顶'" >
+        </el-tag>
 
-      <router-link class="title" :to='{path: "/topic/"+ item.id}'>
-        {{item.title}}
-      </router-link>
+        <router-link class="title" :to='{path: "/topic/"+ item.id}'>
+          {{item.title}}
+        </router-link>
+        <span class="time">
+          {{$moment(item.last_reply_at, 'YYYY-MM-DD')
+          .startOf('day')
+          .fromNow()}}
+        </span>
+     </div>
 
-      <span class="time">
-        {{$moment(item.last_reply_at, 'YYYY-MM-DD')
-        .startOf('day')
-        .fromNow()}}
-      </span>
-    </div>
   </div>
 </template>
 <script>
+
 export default {
     /**
    * 给此组件起的名字，会显示在Vue的DevTool里面
@@ -46,10 +53,13 @@ export default {
     return {
       article: []
     }
+  },
+  components:{
   }
 }
 </script>
 <style lang='scss' scoped>
+
 .topic {
   margin: 10px;
   display: flex;
@@ -88,5 +98,6 @@ export default {
     width: 70px;
     text-align: right;
   }
+
 }
 </style>

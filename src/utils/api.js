@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-02 17:17:37
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-08 17:44:20
+ * @LastEditTime: 2020-06-09 14:40:27
  */
 
 import request from '@/utils/request'
@@ -43,8 +43,15 @@ export const getCollections = loginname =>{
 // /accesstoken 验证 accessToken 的正确性
 export const getAccesstoken = data =>{
   return request({
-    url: `/accesstoken`,
+    url: '/accesstoken',
     method:'post',
     data
+  })
+}
+
+export const logout = ()=>{
+  return request({
+    url: '/topic_collect/alsotang',
+    method:'get',
   })
 }

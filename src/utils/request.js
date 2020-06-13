@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-02 14:35:12
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-03 16:18:09
+ * @LastEditTime: 2020-06-09 11:58:45
  */
 
 
@@ -18,10 +18,10 @@ import { Message, Loading } from 'element-ui'
  /**
   * error  错误的提示
   */
-const error  = () => {
+const error  = (err) => {
   Message({
     type: 'error',
-    message: '遇到错误，请刷新重试！',
+    message: err,
     duration: 2 * 1000
   })
 };
@@ -66,7 +66,7 @@ service.interceptors.request.use(
   err => {
     // 请求发送错误的处理
     endLoading()
-    error()
+    error(err)
     Promise.reject(err)
   }
 )
@@ -81,7 +81,7 @@ service.interceptors.response.use(
   err => {
     // 非 2xx 状态码情况将触发这个函数，处理响应错误
     endLoading()
-    error()
+    error(err)
     return Promise.reject(err)
   }
 )

@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-03 14:55:51
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-09 11:40:37
+ * @LastEditTime: 2020-06-10 14:21:48
 -->
 <template>
   <div class="header">
@@ -15,12 +15,25 @@
         <li>
           <a href="/">首页</a>
         </li>
-        <li>
-          <a href="javascript:;">注册</a>
-        </li>
-        <li>
-          <a @click="signin = true" href="javascript:;">登录</a>
-        </li>
+        <template v-if="!$store.getters.token">
+          <li>
+            <a href="javascript:;" >注册</a>
+          </li>
+          <li>
+            <a @click="setSignin(true)" href="javascript:;">登录</a>
+          </li>
+        </template>
+
+        <template v-if="$store.getters.token">
+          <li>
+            <a href="javascript:;" >设置</a>
+          </li>
+          <li>
+            <a @click="logout" href="javascript:;">退出</a>
+
+          </li>
+        </template>
+
         <li @click="dialogVisible = true">
           <a href="javascript:;">关于</a>
         </li>
@@ -29,13 +42,14 @@
     </div>
 
     <!-- 登录 -->
-    <el-dialog title="登录" :visible.sync="signin" width="35%">
+    <el-dialog title="登录"  :visible.sync="signin" width="35%" :before-close="handleClose" >
+
       <div class="inside-dialog signin">
-        <el-input name='accesstoken' v-model="accesstoken" placeholder="请输入Access Token" clearable></el-input>
-          <el-button type="primary" size="medium" @click="getAccesstoken(accesstoken)">登录</el-button>
+        <el-input name="accesstoken" v-model="accesstoken" placeholder="请输入Access Token" clearable></el-input>
+        <el-button type="primary" size="medium" @click="getAccesstoken('1d94651b-e73e-4482-afe5-55d30360810a')">登录</el-button>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="signin = false">确 定</el-button>
+        <el-button type="primary" @click="setSignin(false)">确 定</el-button>
       </span>
     </el-dialog>
 
@@ -43,6 +57,7 @@
       <div class="inside-dialog">
         <p>
           作者：
+
           <a href="http://x361.xyz" target="_blank" rel="nofollow noopener noreferrer">祁野</a>
         </p>
         <p>
@@ -75,7 +90,6 @@
 <script>
 /* import { getAccesstoken } from '@/utils/api' */
 
-
 /**
  * 网站顶部组件
  */
@@ -90,22 +104,67 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      signin: false,
-      accesstoken: ''
+      accesstoken: '',
     }
   },
   methods: {
-    getAccesstoken(accesstoken){
-      let data = {accesstoken:accesstoken}
+     handleClose(done) {
+       let _this = this
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            _this.setSignin(false)
+          })
+          .catch(_ => {});
+      },
+
+    getAccesstoken(accesstoken) {
+       this.$store.commit('SET_SIGNIN', true)
+
+      let _this = this
+      /* let data = {accesstoken:accesstoken} */
       /* getAccesstoken(data).then(res => {
          console.log(res)
          console.log(this.$store)
         }) */
-        console.log(this.$store.dispatch('getAccesstoken',accesstoken).then(()=>{
-          console.log(this.$store.getters)
-        }))
+      this.$store.dispatch('getAccesstoken', accesstoken).then(() => {
+        console.log(this.$store)
+        this.$store.commit('SET_SIGNIN', false)
+        console.log(this.$store.getters)
+      })
+
+
+    },
+    /**切换是否显示Dialog 登录 */
+    setSignin(signin){
+        this.$store.commit('SET_SIGNIN', signin)
+    },
+
+    logout(){
+        this.$confirm('此操作将退出登录状态, 是否继续?', '提示', {
+          type: 'warning',
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(() => {
+          this.$store.dispatch('logout').then(() => { console.log(this.$store.getters)})
+
+          this.$message({
+            type: 'success',
+            message: '退出成功！'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '退出已取消！'
+          });
+        });
     }
   },
+
+  computed:{
+    signin:function(){
+      return this.$store.getters.signin
+    }
+  }
 }
 </script>
 
@@ -162,7 +221,7 @@ export default {
       }
     }
   }
-  .signin{
+  .signin {
     text-align: center;
   }
 }
@@ -189,7 +248,6 @@ export default {
       width: 60%;
       margin-top: 30px;
     }
-
   }
 }
 </style>
