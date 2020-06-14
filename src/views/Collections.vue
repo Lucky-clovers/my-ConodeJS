@@ -45,7 +45,6 @@ export default {
   methods: {
     fetchData(loginname) {
       getCollections(loginname).then(res => {
-
         this.collections = res.data
         console.log('收藏',res.data)
       })
@@ -62,7 +61,9 @@ export default {
     }
     this.fetchData(this.loginname);
   },
+  computed:{
 
+  },
   /**
    * 组件被销毁的钩子
    * 给this增加属性，表示当前实例已被卸载
@@ -70,11 +71,19 @@ export default {
   destroyed() {
 
   },
+  mounted() {
+      let loginname = this.$store.getters.token
+      loginname = JSON.parse(loginname).loginname
+      console.log(loginname)
+      this.fetchData(loginname);
+  },
   watch: {
     loginname(loginname) {
       if (!loginname) {
+
         return;
       }
+
       this.fetchData(loginname);
     }
   },

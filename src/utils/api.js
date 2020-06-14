@@ -45,7 +45,7 @@ export const getAccesstoken = data =>{
   return request({
     url: '/accesstoken',
     method:'post',
-    data
+    params: data
   })
 }
 
@@ -53,5 +53,23 @@ export const logout = ()=>{
   return request({
     url: '/topic_collect/alsotang',
     method:'get',
+  })
+}
+
+//收藏主题
+export  const  collect = data =>{
+  return request({
+    url: '/topic_collect/collect',
+    method: 'post',
+    params: data
+  })
+}
+
+// 取消主题收藏
+export  const de_collect = data =>{
+  return request({
+    url: '/topic_collect/de_collect',
+    method: 'post',
+    params: data
   })
 }

@@ -6,6 +6,7 @@
  */
 const getters = {
   token : state => state.user.token,
-  signin : state => state.user.signin
+  signin : state => state.user.signin,
+  accesstoken: state => state.user.accesstoken
 }
 export default getters

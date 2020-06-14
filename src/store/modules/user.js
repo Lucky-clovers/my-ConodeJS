@@ -11,8 +11,9 @@ import {startLoading,error} from '@/utils/request'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const state = {
-  token: JSON.parse(getToken()) ,
-  signin:false
+  token: getToken() ,
+  signin:false,
+  accesstoken:'1d94651b-e73e-4482-afe5-55d30360810a'
 }
 const mutations = {
   SET_TOKEN: (state, token) => {
@@ -20,6 +21,9 @@ const mutations = {
   },
   SET_SIGNIN: (state, signin) => {
     state.signin = signin
+  },
+  SET_ACCESSTOKEN: (state, accesstoken) => {
+    state.accesstoken = accesstoken
   }
  /*  SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
@@ -58,13 +62,17 @@ const actions = {
 
   //登录
   getAccesstoken({ commit },accesstoken){
+
+
+
     let data = {accesstoken:accesstoken}
     return new Promise((resolve, reject) => {
       getAccesstoken(data).then(res => {
-        console.log(res)
+
 
         setToken(JSON.stringify(res))
 
+        commit('SET_ACCESSTOKEN', accesstoken)
         commit('SET_TOKEN', res)
         resolve()
        }).catch(err => {

@@ -14,8 +14,8 @@
 /**
  * 用户个人中心页
  */
-import OtherTopic from '@/components/User/OtherTopic';//头像信息
-import ProfilePanel from '@/components/User/ProfilePanel';//最近创建的话题
+import OtherTopic from '@/components/User/OtherTopic';//最近创建的话题
+import ProfilePanel from '@/components/User/ProfilePanel';//头像信息
 import RecentReply from "@/components/User/RecentReply";//最近参与的话题
 export default {
   /**

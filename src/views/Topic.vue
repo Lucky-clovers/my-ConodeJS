@@ -8,6 +8,8 @@
   <div class="topic">
     <div class="left">
       <div class="title" v-html="topic.title"></div>
+      <el-button  type="primary" @click="collect" plain class="el-icon-star-off">收藏
+      </el-button>
       <div class="info">
         <span>
           发布于&nbsp;
@@ -38,7 +40,7 @@
   </div>
 </template>
 <script>
-import { getTopicById } from '@/utils/api'
+import { getTopicById,collect } from '@/utils/api'
 import Divider from '@/components/Divider'
 import Reply from '@/components/Topic/Reply'
 import ProfilePanel from "@/components/User/ProfilePanel";
@@ -62,6 +64,13 @@ export default {
         }
         console.log(this.topic)
       })
+    },
+    collect(){
+         let accesstoken = this.$store.getters.accesstoken
+         let data = {accesstoken:accesstoken,topic_id:this.topic.id}
+          collect(data).then( res => {
+               console.log(res)
+          } )
     }
   },
   /**
@@ -94,7 +103,15 @@ export default {
 $grey-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 
 .topic {
-
+  .el-icon-star-off:before{
+    padding-right: 5px;
+  }
+  .el-button{
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    padding: 5px 10px;
+  }
   display: flex;
   margin-bottom: 100px;
   .title {
@@ -116,6 +133,7 @@ $grey-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     float: left;
     box-shadow: $grey-shadow;
     padding: 20px;
+    position: relative;
     .info {
       display: flex;
       align-items: center;

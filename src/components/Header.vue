@@ -76,6 +76,7 @@
           <ul>
             <li>Vue</li>
             <li>Vue Router</li>
+            <li>VueX</li>
             <li>ElementUI</li>
             <li>Axios</li>
           </ul>

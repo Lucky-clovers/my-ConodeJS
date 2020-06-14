@@ -19,7 +19,7 @@
     </div>
 
     <div v-else-if="token">
-       <!--  <div>
+       <div>
           个人信息
         </div>
         <Divider/>
@@ -32,8 +32,8 @@
             “
                 这家伙很懒，什么个性签名都没有留下。
             ”
-        </div> -->
-        <ProfilePanel :loginname='user.loginname'/>
+        </div>
+
     </div>
 
   </div>
@@ -44,7 +44,6 @@
 <script>
 
 import { getUserByName } from '@/utils/api'
-import ProfilePanel from '@/components/User/ProfilePanel.vue'
 
 import Divider from '@/components/Divider.vue'
 export default {
@@ -64,7 +63,8 @@ export default {
      * 判断是否获取用户详情
      */
     if(this.token){
-      let loginname = this.token.loginname
+      let loginname = JSON.parse(this.token).loginname
+
         getUserByName(loginname).then(res => {
             this.user =  res.data
        });
@@ -73,7 +73,6 @@ export default {
   },
   components:{
     Divider,
-    ProfilePanel
   },
   computed: {
     signin:function(){

@@ -21,7 +21,10 @@
         <Content :list="list" />
       </el-tab-pane>
     </el-tabs>
-    <Person class="right"/>
+    <div class="right">
+      <Person />
+      <Collections />
+    </div>
   </div>
 </template>
 
@@ -32,6 +35,7 @@
 import Content from '@/components/Content.vue'
 import Person from '@/components/Person/Person.vue';
 import { getTopics } from '@/utils/api'
+import Collections from "@/views/Collections";
 
 export default {
   /**
@@ -132,7 +136,8 @@ export default {
    */
   components: {
     Content,
-    Person
+    Person,
+    Collections,
   }
 }
 </script>
@@ -159,10 +164,12 @@ $grey-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     float: right;
     width: 25%;
     height: 100%;
-    margin-left: 2%;
     padding: 20px 20px;
+    padding-top: 0;
+   /* margin-left: 2%;
+
     box-sizing: border-box;
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);*/
   }
 }
 </style>
