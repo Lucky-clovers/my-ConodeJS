@@ -61,7 +61,7 @@ export  const  collect = data =>{
   return request({
     url: '/topic_collect/collect',
     method: 'post',
-    params: data
+    data: data
   })
 }
 

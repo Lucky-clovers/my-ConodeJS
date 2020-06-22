@@ -62,16 +62,32 @@ export default {
           ...res.data,
           ...res.data.author
         }
+
         console.log(this.topic)
       })
     },
     collect(){
          let accesstoken = this.$store.getters.accesstoken
+      console.log(accesstoken)
          let data = {accesstoken:accesstoken,topic_id:this.topic.id}
           collect(data).then( res => {
-               console.log(res)
+
+               if(res.success){
+
+                 this.$message({
+                   type: 'success',
+                   message: '收藏成功',
+                   duration: 2 * 1000
+                 })
+
+               }
+
           } )
     }
+  },
+
+  mounted() {
+
   },
   /**
    * 一般此钩子下面调用接口获取数据

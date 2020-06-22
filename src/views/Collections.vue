@@ -10,7 +10,7 @@
     <Divider class="divider" />
     <template v-for="item in collections">
       <div :key="item.id">
-        <router-link v-if="length" :to="{path: '/topic/' + item.id}">{{item.title}}</router-link>
+        <router-link v-if="item.length" :to="{path: '/topic/' + item.id}">{{item.title}}</router-link>
         <div v-else>
           <div class="main">
             <div>
@@ -46,6 +46,12 @@ export default {
     fetchData(loginname) {
       getCollections(loginname).then(res => {
         this.collections = res.data
+        //是否登录
+
+        if(this.$store.getters.token){
+          console.log('登录了')
+          console.log('收藏',res.data)
+        }
         console.log('收藏',res.data)
       })
     }
@@ -72,10 +78,12 @@ export default {
 
   },
   mounted() {
-      let loginname = this.$store.getters.token
-      loginname = JSON.parse(loginname).loginname
-      console.log(loginname)
-      this.fetchData(loginname);
+      if(this.$store.getters.token){
+        let loginname = this.$store.getters.token
+        loginname = JSON.parse(loginname).loginname
+        console.log(loginname)
+        this.fetchData(loginname);
+      }
   },
   watch: {
     loginname(loginname) {

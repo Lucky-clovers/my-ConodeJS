@@ -62,6 +62,7 @@ export default {
     /**
      * 判断是否获取用户详情
      */
+    console.log(this.token)
     if(this.token){
       let loginname = JSON.parse(this.token).loginname
 
