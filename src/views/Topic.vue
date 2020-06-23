@@ -8,7 +8,7 @@
   <div class="topic">
     <div class="left">
       <div class="title" v-html="topic.title"></div>
-      <el-button  type="primary" @click="collect" plain class="el-icon-star-off">收藏
+      <el-button  :type="topic.is_collect ? 'danger' : 'primary'" @click="collect(topic.is_collect)"  class="el-icon-star-off"  v-text="topic.is_collect ? '取消收藏':'收藏'">
       </el-button>
       <div class="info">
         <span>
@@ -40,7 +40,7 @@
   </div>
 </template>
 <script>
-import { getTopicById,collect } from '@/utils/api'
+import { getTopicById,collect,de_collect } from '@/utils/api'
 import Divider from '@/components/Divider'
 import Reply from '@/components/Topic/Reply'
 import ProfilePanel from "@/components/User/ProfilePanel";
@@ -56,33 +56,52 @@ export default {
   },
   methods: {
     fetchData(id) {
-      getTopicById(id).then(res => {
-        //对象中的扩展运算符(...)用于取出参数对象中的所有可遍历属性，拷贝到当前对象之中
-        this.topic = {
-          ...res.data,
-          ...res.data.author
-        }
+      let accesstoken = this.$store.getters.accesstoken
+      if(accesstoken){
+        getTopicById(id,{accesstoken:accesstoken}).then(res => {
+          console.log(res)
 
-        console.log(this.topic)
-      })
+          this.topic = {
+            ...res.data,
+            ...res.data.author
+          }
+
+        })
+      }else{
+        getTopicById(id).then(res => {
+          //对象中的扩展运算符(...)用于取出参数对象中的所有可遍历属性，拷贝到当前对象之中
+          this.topic = {
+            ...res.data,
+            ...res.data.author
+          }
+
+          console.log(this.topic)
+        })
+      }
     },
-    collect(){
-         let accesstoken = this.$store.getters.accesstoken
-      console.log(accesstoken)
-         let data = {accesstoken:accesstoken,topic_id:this.topic.id}
-          collect(data).then( res => {
+    collect(number){
+      let accesstoken = this.$store.getters.accesstoken
+          if(number){
+            de_collect({
+              accesstoken:accesstoken,
+              topic_id:this.$route.params.id,
+            }).then(res=>{
+              if(res.success){
+                this.$message('以取消收藏')
+              }
+            })
+          }else{
+             console.log(accesstoken)
+             let data = {accesstoken:accesstoken,topic_id:this.topic.id}
+             let _this = this
+              collect(data).then( res => {
 
-               if(res.success){
-
-                 this.$message({
-                   type: 'success',
-                   message: '收藏成功',
-                   duration: 2 * 1000
-                 })
-
-               }
-
-          } )
+                   if(res.success){
+                     _this.topic.is_collect = res.success
+                     this.$message('收藏成功')
+                   }
+              } )
+          }
     }
   },
 

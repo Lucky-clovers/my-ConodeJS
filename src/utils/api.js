@@ -18,10 +18,11 @@ export const getTopics = data => {
 
 
 // 获取帖子详情数据
-export const getTopicById = id => {
+export const getTopicById = (id,data) => {
   return request({
     url: `/topic/${id}`,
-    method: 'get'
+    method: 'get',
+    params: data
   })
 }
 
