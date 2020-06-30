@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-03 14:55:51
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-30 16:06:48
+ * @LastEditTime: 2020-06-30 17:03:28
 -->
 <template>
   <div class="header">
@@ -60,7 +60,7 @@
 
           <a href="http://x361.xyz" target="_blank" rel="nofollow noopener noreferrer">祁野</a>
         </p>
-        <p>accesstoken：1d94651b-e73e-4482-afe5-55d30360810a</p>
+        <!-- <p>accesstoken：1d94651b-e73e-4482-afe5-55d30360810a</p> -->
         <p>
           源码：
           <el-icon type="star" class="el-icon-star-off" />
