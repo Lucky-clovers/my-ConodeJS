@@ -23,7 +23,7 @@
     </el-tabs>
     <div class="right">
       <Person />
-      <Collections />
+      <Collections v-if="token"/>
     </div>
   </div>
 </template>
@@ -130,6 +130,14 @@ export default {
    */
   destroyed() {
     window.removeEventListener('scroll', this.scrollMethod)
+  },
+  /**
+   * 计算属性
+   */
+  computed: {
+    token:function(){
+      return this.$store.getters.token
+    }
   },
   /**
    * 注册引用进来的其他组件

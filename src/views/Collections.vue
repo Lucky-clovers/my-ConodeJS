@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-05 10:21:28
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-05 10:43:24
+ * @LastEditTime: 2020-06-30 16:21:30
 -->
 <template>
   <div class="panel">
@@ -46,12 +46,7 @@ export default {
     fetchData(loginname) {
       getCollections(loginname).then(res => {
         this.collections = res.data
-        //是否登录
 
-        if(this.$store.getters.token){
-          console.log('登录了')
-          console.log('收藏',res.data)
-        }
         console.log('收藏',res.data)
       })
     }
@@ -79,9 +74,11 @@ export default {
   },
   mounted() {
       if(this.$store.getters.token){
-        let loginname = this.$store.getters.token
-        loginname = JSON.parse(loginname).loginname
+        let token = this.$store.getters.token
+        let loginname = JSON.parse(token).loginname
+
         console.log(loginname)
+
         this.fetchData(loginname);
       }
   },

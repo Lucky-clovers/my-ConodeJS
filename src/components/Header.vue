@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-03 14:55:51
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-10 14:21:48
+ * @LastEditTime: 2020-06-30 16:06:48
 -->
 <template>
   <div class="header">
@@ -46,10 +46,10 @@
 
       <div class="inside-dialog signin">
         <el-input name="accesstoken" v-model="accesstoken" placeholder="请输入Access Token" clearable></el-input>
-        <el-button type="primary" size="medium" @click="getAccesstoken('1d94651b-e73e-4482-afe5-55d30360810a')">登录</el-button>
+        <el-button type="primary" size="medium" @click="getAccesstoken">登录</el-button>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="setSignin(false)">确 定</el-button>
+        <el-button plain @click="setSignin(false)">取消</el-button>
       </span>
     </el-dialog>
 
@@ -60,6 +60,7 @@
 
           <a href="http://x361.xyz" target="_blank" rel="nofollow noopener noreferrer">祁野</a>
         </p>
+        <p>accesstoken：1d94651b-e73e-4482-afe5-55d30360810a</p>
         <p>
           源码：
           <el-icon type="star" class="el-icon-star-off" />
@@ -89,7 +90,7 @@
   </div>
 </template>
 <script>
-/* import { getAccesstoken } from '@/utils/api' */
+import { getAccesstoken,logout } from '@/utils/api'
 
 /**
  * 网站顶部组件
@@ -113,25 +114,34 @@ export default {
        let _this = this
         this.$confirm('确认关闭？')
           .then(_ => {
+
             _this.setSignin(false)
+
           })
           .catch(_ => {});
       },
 
-    getAccesstoken(accesstoken) {
-       this.$store.commit('SET_SIGNIN', true)
+    getAccesstoken() {
 
-      let _this = this
-      /* let data = {accesstoken:accesstoken} */
-      /* getAccesstoken(data).then(res => {
+      this.$store.commit('SET_SIGNIN', true)
+
+      getAccesstoken({accesstoken:this.accesstoken}).then(res => {
          console.log(res)
-         console.log(this.$store)
-        }) */
-      this.$store.dispatch('getAccesstoken', accesstoken).then(() => {
-        console.log(this.$store)
-        this.$store.commit('SET_SIGNIN', false)
-        console.log(this.$store.getters)
-      })
+
+         //this.accesstoken = ''
+
+         this.$store.commit('SET_TOKEN', res)
+         this.$store.commit('SET_SIGNIN', false)
+
+         //console.log(this.$store)
+
+       })
+
+      // this.$store.dispatch('getAccesstoken', accesstoken).then(() => {
+      //   console.log(this.$store)
+      //   this.$store.commit('SET_SIGNIN', false)
+      //   console.log(this.$store.getters)
+      // })
 
 
     },
@@ -141,17 +151,25 @@ export default {
     },
 
     logout(){
+
         this.$confirm('此操作将退出登录状态, 是否继续?', '提示', {
           type: 'warning',
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(() => {
-          this.$store.dispatch('logout').then(() => { console.log(this.$store.getters)})
 
-          this.$message({
-            type: 'success',
-            message: '退出成功！'
-          });
+          logout().then(res=>{
+              console.log(this.$store.getters)
+
+              this.$store.commit('SET_TOKEN', '')
+              this.$message({
+                type: 'success',
+                message: '退出成功！'
+              });
+          })
+
+          // this.$store.dispatch('logout').then(() => { console.log(this.$store.getters)})
+
         }).catch(() => {
           this.$message({
             type: 'info',

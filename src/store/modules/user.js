@@ -2,11 +2,12 @@
  * @Author: QIYE
  * @Date: 2020-06-08 17:28:28
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-12 17:27:39
+ * @LastEditTime: 2020-06-30 15:59:15
  */
 import Cookies from 'js-cookie'
 
-import {getAccesstoken,logout} from '@/utils/api'
+// import {getAccesstoken,logout} from '@/utils/api'
+
 import {startLoading,error} from '@/utils/request'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 
@@ -17,7 +18,9 @@ const state = {
 }
 const mutations = {
   SET_TOKEN: (state, token) => {
-    state.token = token
+
+    setToken(token)
+    state.token = getToken()
   },
   SET_SIGNIN: (state, signin) => {
     state.signin = signin
@@ -25,18 +28,7 @@ const mutations = {
   SET_ACCESSTOKEN: (state, accesstoken) => {
     state.accesstoken = accesstoken
   }
- /*  SET_INTRODUCTION: (state, introduction) => {
-    state.introduction = introduction
-  },
-  SET_NAME: (state, name) => {
-    state.name = name
-  },
-  SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
-  },
-  SET_ROLES: (state, roles) => {
-    state.roles = roles
-  } */
+
 }
 
 const actions = {
@@ -63,17 +55,14 @@ const actions = {
   //登录
   getAccesstoken({ commit },accesstoken){
 
-
-
     let data = {accesstoken:accesstoken}
     return new Promise((resolve, reject) => {
       getAccesstoken(data).then(res => {
 
-
-        setToken(JSON.stringify(res))
-
+        setToken(res)
         commit('SET_ACCESSTOKEN', accesstoken)
         commit('SET_TOKEN', res)
+
         resolve()
        }).catch(err => {
         reject(err)

@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-08 16:10:58
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-10 16:16:24
+ * @LastEditTime: 2020-06-30 16:26:33
 -->
 <template>
   <div class="person">
@@ -18,7 +18,7 @@
          <!-- 登录 -->
     </div>
 
-    <div v-else-if="token">
+    <div v-else>
        <div>
           个人信息
         </div>
@@ -50,27 +50,21 @@ export default {
   name:'person',
   data(){
     return{
-      user:''
+      user:{}
     }
   },
   methods: {
     setSignin(signin){
         this.$store.commit('SET_SIGNIN', signin)
     },
+
+  },
+  created() {
+
   },
   mounted() {
-    /**
-     * 判断是否获取用户详情
-     */
-    console.log(this.token)
-    if(this.token){
-      let loginname = JSON.parse(this.token).loginname
 
-        getUserByName(loginname).then(res => {
-            this.user =  res.data
-       });
 
-     }
   },
   components:{
     Divider,
@@ -80,6 +74,19 @@ export default {
       return this.$store.getters.signin
     },
     token:function(){
+    /**
+     * 判断是否获取用户详情
+     */
+       if(this.$store.getters.token){
+        let loginname = JSON.parse(this.$store.getters.token).loginname
+        getUserByName(loginname).then(res => {
+            this.user ={
+              ...res.data
+            }
+          //  console.log(res)
+       });
+     }
+
       return this.$store.getters.token
     },
   },

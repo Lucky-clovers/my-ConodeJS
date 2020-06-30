@@ -2,7 +2,7 @@
  * @Author: QIYE
  * @Date: 2020-06-02 17:17:37
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-09 14:40:27
+ * @LastEditTime: 2020-06-30 15:23:42
  */
 
 import request from '@/utils/request'
@@ -18,10 +18,11 @@ export const getTopics = data => {
 
 
 // 获取帖子详情数据
-export const getTopicById = id => {
+export const getTopicById = (id ,data) => {
   return request({
     url: `/topic/${id}`,
-    method: 'get'
+    method: 'get',
+    params: data
   })
 }
 
@@ -70,6 +71,6 @@ export  const de_collect = data =>{
   return request({
     url: '/topic_collect/de_collect',
     method: 'post',
-    params: data
+    data: data
   })
 }

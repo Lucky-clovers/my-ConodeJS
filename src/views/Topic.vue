@@ -2,13 +2,13 @@
  * @Author: QIYE
  * @Date: 2020-06-04 14:06:27
  * @LastEditors: qiye
- * @LastEditTime: 2020-06-04 15:09:37
+ * @LastEditTime: 2020-06-30 16:52:58
 -->
 <template>
   <div class="topic">
     <div class="left">
       <div class="title" v-html="topic.title"></div>
-      <el-button  type="primary" @click="collect" plain class="el-icon-star-off">收藏
+      <el-button  :type="topic.is_collect ? 'warning':'primary'" @click="collect" plain class="el-icon-star-off" v-text='topic.is_collect ? "取消收藏" :"收藏"'>
       </el-button>
       <div class="info">
         <span>
@@ -40,7 +40,7 @@
   </div>
 </template>
 <script>
-import { getTopicById,collect } from '@/utils/api'
+import { getTopicById,collect,de_collect } from '@/utils/api'
 import Divider from '@/components/Divider'
 import Reply from '@/components/Topic/Reply'
 import ProfilePanel from "@/components/User/ProfilePanel";
@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     fetchData(id) {
-      getTopicById(id).then(res => {
+      getTopicById(id,{accesstoken:this.$store.getters.accesstoken}).then(res => {
         //对象中的扩展运算符(...)用于取出参数对象中的所有可遍历属性，拷贝到当前对象之中
         this.topic = {
           ...res.data,
@@ -66,23 +66,40 @@ export default {
         console.log(this.topic)
       })
     },
+
     collect(){
-         let accesstoken = this.$store.getters.accesstoken
-      console.log(accesstoken)
-         let data = {accesstoken:accesstoken,topic_id:this.topic.id}
-          collect(data).then( res => {
+          if(!this.topic.is_collect){
+            //收藏
+            collect({
+              accesstoken:this.$store.getters.accesstoken,
+              topic_id:this.topic.id
+              }).then( res => {
+                 if(res.success){
+                   this.$message({
+                     type: 'success',
+                     message: '收藏成功',
+                     duration: 2 * 1000
+                   })
+                 }
 
-               if(res.success){
-
-                 this.$message({
-                   type: 'success',
-                   message: '收藏成功',
-                   duration: 2 * 1000
-                 })
-
-               }
-
-          } )
+                 this.fetchData(this.$route.params.id)
+            })
+          }else{
+            //取消收藏
+            de_collect({
+              accesstoken:this.$store.getters.accesstoken,
+              topic_id:this.topic.id
+            }).then( res => {
+                 if(res.success){
+                   this.$message({
+                     type: 'success',
+                     message: '以取消收藏',
+                     duration: 2 * 1000
+                   })
+                 }
+                  this.fetchData(this.$route.params.id)
+            })
+          }
     }
   },
 
@@ -91,6 +108,7 @@ export default {
   },
   /**
    * 一般此钩子下面调用接口获取数据
+   * 组件创建的视乎
    */
   created() {
     this.fetchData(this.$route.params.id)
@@ -102,6 +120,7 @@ export default {
    * 可以访问组件实例 `this`
    */
   beforeRouteUpdate(to, from, next) {
+
     this.fetchData(to.params.id)
     next()
   },
@@ -135,6 +154,8 @@ $grey-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     font-weight: bold;
     font-size: 25px;
     margin-bottom: 8px;
+    line-height: 1.2;
+    padding-right: 90px;
   }
   .content {
     color: #333;
