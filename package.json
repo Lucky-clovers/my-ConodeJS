@@ -12,7 +12,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "element-ui": "^2.12.0",
-    "moment": "^2.26.0",
+    "moment": "^2.29.4",
     "scss": "^0.2.4",
     "style-loader": "^1.2.1",
     "vue": "^2.5.2",
